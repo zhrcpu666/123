@@ -1,0 +1,40 @@
+port: 7890
+socks-port: 7891
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: false
+
+proxies:
+  - name: "vless-reality"
+    type: vless
+    server: 38.207.171.60
+    port: 443
+    uuid: 63105ca6-f613-4cb0-9b52-45b800b6827e
+    flow: xtls-rprx-vision
+    network: tcp
+    tls: true
+    udp: true
+    servername: assets.adobedtm.com
+    tls-host: assets.adobedtm.com
+    reality-opts:
+      public-key: MQ1WcicLMtsPNrfGwbAYYK17TFZIiEwqBgn6W4NgbDQ
+      short-id: ""
+    client-fingerprint: firefox
+
+proxy-groups:
+  - name: 自动选择
+    type: url-test
+    proxies:
+      - vless-reality
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+
+  - name: 手动选择
+    type: select
+    proxies:
+      - vless-reality
+
+rules:
+  - GEOIP,CN,DIRECT
+  - MATCH,自动选择
